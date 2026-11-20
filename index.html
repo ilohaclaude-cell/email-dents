@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0b1e3f">
+<title>L'émail des dents</title>
+<style>
+:root{--bg:#0b1e3f;--acid:#ff4b3e;--acid2:#ff9a3c;--prot:#3ef0c8;--cyan:#5fd8ff;--txt:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--txt);
+ font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Inter,Arial,sans-serif;
+ -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:none;-webkit-tap-highlight-color:transparent}
+body{background:radial-gradient(ellipse at 50% 45%,#16386b 0%,#0b1e3f 55%,#050f24 100%)}
+#grid{position:fixed;inset:0;pointer-events:none;opacity:.07;
+ background-image:linear-gradient(#9cc8ff 1px,transparent 1px),linear-gradient(90deg,#9cc8ff 1px,transparent 1px);background-size:6vw 6vw}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block;transition:filter 1.2s ease}
+#c.blur{filter:blur(9px) brightness(.55)}
+#flash{position:fixed;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 50%,#e8f6ff 0%,#7fc4ff 30%,rgba(11,30,63,0) 75%)}
+#ui{position:fixed;inset:0;pointer-events:none}
+.b{position:absolute;opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
+.b.on{opacity:1;transform:none;transition-delay:.7s}
+.shadow{text-shadow:0 2px 14px rgba(0,0,0,.6)}
+.kicker{top:3.2vh;left:3vw;font-size:min(2vw,2.8vh);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9cc8ff}
+.kicker b{color:#fff}
+.title{top:6vh;left:5vw;right:5vw;text-align:center;font-size:min(5vw,7.4vh);font-weight:800;line-height:1.1}
+.title em{font-style:normal;color:var(--cyan)}
+.sub{bottom:9vh;left:0;right:0;text-align:center;font-size:min(3vw,4.4vh);font-weight:600;color:#cfe3ff;letter-spacing:.04em}
+.big{font-size:min(4.4vw,6.4vh);font-weight:800;line-height:1.15}
+.mid{font-size:min(3vw,4.4vh);font-weight:700;line-height:1.2}
+.chip{display:inline-block;padding:.35em .7em;border-radius:.5em;background:rgba(5,15,36,.65);border:2px solid rgba(156,200,255,.35)}
+.red{color:var(--acid)} .grn{color:var(--prot)} .org{color:var(--acid2)} .cy{color:var(--cyan)}
+#lbl1{left:0;top:0;transform:none;display:flex;align-items:center;gap:0}
+#lbl1.on{transform:none}
+#lbl1 .dot{width:14px;height:14px;border-radius:50%;background:var(--cyan);box-shadow:0 0 14px var(--cyan);flex:none}
+#lbl1 .ln{width:5vw;height:3px;background:var(--cyan);flex:none}
+#lbl1 .t{padding-left:.5em;font-size:min(2.8vw,4.1vh);font-weight:800;line-height:1.15;white-space:nowrap}
+.formula{font-variant-numeric:tabular-nums;letter-spacing:.01em}
+/* pH gauge */
+#ph{right:4vw;top:13vh;bottom:22vh;width:min(11vw,15vh);display:flex;flex-direction:column;align-items:center}
+#ph .lab{font-size:min(2.6vw,3.8vh);font-weight:800;margin-bottom:1vh}
+#ph .bar{position:relative;flex:1;width:34%;border-radius:999px;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.35);overflow:visible}
+#ph .fill{position:absolute;left:0;right:0;bottom:0;border-radius:999px;background:var(--prot)}
+#ph .crit{position:absolute;left:-60%;right:-60%;height:4px;background:var(--acid);box-shadow:0 0 10px var(--acid)}
+#ph .crit span{position:absolute;right:100%;top:50%;transform:translateY(-50%);margin-right:.5em;white-space:nowrap;color:var(--acid);font-weight:800;font-size:min(1.9vw,2.8vh);text-align:right;line-height:1.1}
+#ph .val{margin-top:1.2vh;font-size:min(3.6vw,5.2vh);font-weight:800;font-variant-numeric:tabular-nums}
+#demin{top:12vh;left:4vw;max-width:56vw}
+#remin{top:12vh;left:4vw;max-width:56vw}
+#soda{left:3vw;bottom:9vh;font-size:min(2.2vw,3.2vh);font-weight:700;padding:.6em .9em;border-radius:.6em;border:2px solid var(--acid);background:rgba(60,8,8,.55)}
+/* Stephan */
+#chartWrap{left:50%;top:13vh;width:min(84vw,118vh);margin-left:calc(min(84vw,118vh)/-2)}
+#chartWrap.on{transform:none}
+#chart{width:100%;height:auto;display:block;overflow:visible}
+#chart text{fill:#fff;font-family:inherit}
+#curve{fill:none;stroke:var(--cyan);stroke-width:7;stroke-linejoin:round;stroke-linecap:round}
+#zone,#zoneLbl,.pt{opacity:0;transition:opacity .8s ease}
+#chartWrap.play #curve{transition:stroke-dashoffset 3s ease-in-out .9s}
+#chartWrap.play #zone{opacity:1;transition-delay:3.6s}
+#chartWrap.play #zoneLbl{opacity:1;transition-delay:4.1s}
+#chartWrap.play .pt{opacity:1}
+#bars{left:6vw;right:6vw;top:16vh}
+.row{display:flex;align-items:center;margin-bottom:5vh}
+.row .who{width:14vw;font-size:min(3.6vw,5.2vh);font-weight:800;flex:none}
+.row .track{flex:1;position:relative;height:min(8vw,11vh)}
+.row .bar{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:.4em;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.row .txt{position:absolute;left:0;top:100%;margin-top:.8vh;font-size:min(2.4vw,3.5vh);font-weight:700;white-space:nowrap;color:#dbe8ff}
+.row .num{position:absolute;top:50%;transform:translateY(-50%);left:0;font-size:min(3.4vw,5vh);font-weight:800;white-space:nowrap;padding-left:.4em;transition:left 1.4s cubic-bezier(.2,.8,.2,1)}
+#emma .bar{background:var(--prot)} #hugo .bar{background:linear-gradient(90deg,var(--acid2),var(--acid))}
+#hugo .bar,#hugo .num{transition-delay:.5s}
+#bars.on #emma .bar{width:37.5%} #bars.on #emma .num{left:37.5%}
+#bars.on #hugo .bar{width:100%} #bars.on #hugo .num{left:auto;right:0;padding-right:.4em;color:#1a0505}
+#concl{left:4vw;right:4vw;bottom:9vh;text-align:center}
+#concl.on{transition-delay:2.2s}
+/* fluor */
+#fluo{left:0;right:0;bottom:9vh;text-align:center}
+#fluo .mid{margin-top:.4em}
+#cards{right:3.5vw;top:15vh;width:48vw;display:flex;flex-direction:column;gap:2.4vh}
+#cards.on{transform:none}
+.card{display:flex;align-items:center;gap:1.4vw;padding:1.4vh 1.4vw;border-radius:1em;background:rgba(5,15,36,.7);border:2px solid rgba(62,240,200,.45);
+ opacity:0;transform:translateX(40px);transition:opacity .5s ease,transform .5s ease}
+.card.on{opacity:1;transform:none}
+.card .ic{font-size:min(5vw,7.2vh);line-height:1;flex:none}
+.card .tx{font-size:min(2.5vw,3.6vh);font-weight:700;line-height:1.2}
+.card .tx small{display:block;font-size:.72em;font-weight:600;color:#bfe9df}
+#merci{top:7vh;left:0;right:0;text-align:center;font-size:min(9vw,13vh);font-weight:900;color:#fff}
+/* chrome */
+#ind{position:fixed;bottom:2.2vh;left:0;right:0;text-align:center;font-size:min(1.7vw,2.5vh);font-weight:600;color:rgba(220,235,255,.6);letter-spacing:.08em;pointer-events:none}
+#ind .dots{display:inline-block;margin-right:.8em}
+#ind .dots i{display:inline-block;width:.5em;height:.5em;border-radius:50%;background:rgba(220,235,255,.25);margin:0 .15em;vertical-align:middle}
+#ind .dots i.on{background:#fff}
+#fs{position:fixed;top:max(14px,env(safe-area-inset-top));right:max(14px,env(safe-area-inset-right));width:44px;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.25);
+ background:rgba(5,15,36,.35);color:rgba(255,255,255,.75);display:flex;align-items:center;justify-content:center;z-index:5;cursor:pointer}
+#fs svg{width:22px;height:22px}
+#rotate{position:fixed;inset:0;z-index:10;display:none;align-items:center;justify-content:center;flex-direction:column;gap:20px;background:var(--bg);font-size:28px;font-weight:700;text-align:center;padding:40px}
+@media (orientation:portrait){#rotate{display:flex}}
+</style>
+</head>
+<body>
+<div id="grid"></div>
+<canvas id="c"></canvas>
+<div id="flash"></div>
+
+<div id="ui">
+ <!-- Slide kickers -->
+ <div class="b kicker" data-s="1 2"><b>1</b> · L'émail : un cristal</div>
+ <div class="b kicker" data-s="3 4"><b>2</b> · Déminéralisation</div>
+ <div class="b kicker" data-s="5 6"><b>3</b> · Le calcul</div>
+ <div class="b kicker" data-s="7 8 9 10 11 12"><b>4</b> · Se protéger</div>
+
+ <!-- Slide 1 -->
+ <div class="b title shadow" data-s="0">Les dents et l'émail,<br><em>un cristal à protéger</em></div>
+ <div class="b sub shadow" data-s="0">Iloha · Arthur · Charles · Doan</div>
+ <div class="b shadow" id="lbl1" data-s="1"><span class="dot"></span><span class="ln"></span><span class="t">Émail =<br><span class="cy">96 % hydroxyapatite</span></span></div>
+ <div class="b shadow" data-s="2" style="left:0;right:0;top:7vh;text-align:center"><div class="big formula">Hydroxyapatite <span class="cy">Ca₁₀(PO₄)₆(OH)₂</span></div></div>
+ <div class="b shadow" data-s="2" style="left:0;right:0;bottom:9vh;text-align:center"><div class="mid chip">Aucune cellule vivante → <span class="org">ne se régénère pas</span></div></div>
+
+ <!-- Slide 2 -->
+ <div class="b" id="ph" data-s="3 4"><div class="lab">pH</div><div class="bar"><div class="fill"></div><div class="crit"><span>pH critique<br>5,5</span></div></div><div class="val">6,8</div></div>
+ <div class="b shadow" id="demin"><div class="big"><span class="red">Déminéralisation</span></div><div class="mid">→ 1<sup>er</sup> stade de la carie</div></div>
+ <div class="b shadow" id="remin" data-s="4"><div class="big"><span class="grn">Reminéralisation</span></div><div class="mid">(salive)</div></div>
+ <div class="b" id="soda" data-s="3 4">🥤 Sodas, jus (pH 2 à 4) → <span class="red">érosion</span></div>
+
+ <!-- Slide 3 -->
+ <div class="b" id="chartWrap" data-s="5">
+  <svg id="chart" viewBox="0 0 1000 600"></svg>
+ </div>
+ <div class="b" id="bars" data-s="6">
+  <div class="row" id="emma"><div class="who">Emma</div><div class="track"><div class="bar"></div><div class="num">54 min/jour</div><div class="txt">3 prises × 18 = 54 min/jour</div></div></div>
+  <div class="row" id="hugo"><div class="who">Hugo</div><div class="track"><div class="bar"></div><div class="num">144 min/jour</div><div class="txt">8 prises × 18 = 144 min/jour (2 h 24)</div></div></div>
+ </div>
+ <div class="b shadow" id="concl" data-s="6"><div class="big">Hugo : <span class="red">×2,7</span> → c'est le <span class="org">NOMBRE</span> de prises qui compte</div></div>
+
+ <!-- Slide 4 -->
+ <div class="b shadow" id="fluo" data-s="7"><div class="big formula">Fluorapatite <span class="grn">Ca₁₀(PO₄)₆F₂</span></div><div class="mid">→ résiste jusqu'à <span class="grn">pH ≈ 4,5</span></div></div>
+ <div class="b" id="cards" data-s="9 10 11 12">
+  <div class="card" data-from="9"><div class="ic">🪥</div><div class="tx">Brossage 2×/jour, 2 min<small>dentifrice fluoré (1&nbsp;450 ppm)</small></div></div>
+  <div class="card" data-from="10"><div class="ic">🍬</div><div class="tx">Limiter le grignotage</div></div>
+  <div class="card" data-from="11"><div class="ic">🥤</div><div class="tx">Éviter sodas et jus</div></div>
+  <div class="card" data-from="12"><div class="ic">🦷</div><div class="tx">Dentiste 1×/an</div></div>
+ </div>
+ <div class="b shadow" id="merci" data-s="13">Merci&nbsp;!</div>
+ <div class="b sub shadow" data-s="13">Iloha · Arthur · Charles · Doan</div>
+</div>
+
+<div id="ind"><span class="dots"><i></i><i></i><i></i><i></i></span><span id="indTxt">1 / 4 · Iloha</span></div>
+<button id="fs" aria-label="Plein écran"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+<div id="rotate"><div style="font-size:64px">📱↻</div>Tournez l'iPad en mode paysage</div>
+
+<script src="three.min.js"></script>
+<script>
+(function(){
+'use strict';
+const T3 = THREE;
+const canvas = document.getElementById('c');
+const renderer = new T3.WebGLRenderer({canvas, antialias:true, alpha:true, powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+renderer.setClearColor(0x000000, 0);
+const scene = new T3.Scene();
+const camera = new T3.PerspectiveCamera(45, 1, 0.05, 400);
+
+scene.add(new T3.AmbientLight(0xb8ccff, 0.55));
+const key = new T3.DirectionalLight(0xffffff, 0.95); key.position.set(4, 8, 10); scene.add(key);
+const rim = new T3.DirectionalLight(0x6fb6ff, 0.6); rim.position.set(-8, 3, -6); scene.add(rim);
+
+// ---------- helpers ----------
+const clamp = (x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const smooth = x=>{x=clamp(x);return x*x*(3-2*x);};
+const lerp = (a,b,t)=>a+(b-a)*t;
+const V = (x,y,z)=>new T3.Vector3(x,y,z);
+
+function fresnelMat(color, opts={}){
+  return new T3.ShaderMaterial({
+    uniforms:{uColor:{value:new T3.Color(color)},uOpacity:{value:opts.opacity??1},uPower:{value:opts.power??2.2},uBase:{value:opts.base??0.15}},
+    vertexShader:`varying vec3 vN;varying vec3 vV;void main(){vec4 mv=modelViewMatrix*vec4(position,1.0);vN=normalize(normalMatrix*normal);vV=normalize(-mv.xyz);gl_Position=projectionMatrix*mv;}`,
+    fragmentShader:`uniform vec3 uColor;uniform float uOpacity;uniform float uPower;uniform float uBase;varying vec3 vN;varying vec3 vV;
+      void main(){float f=pow(1.0-abs(dot(normalize(vN),normalize(vV))),uPower);float a=(uBase+f)*uOpacity;gl_FragColor=vec4(uColor*(0.6+f),a);}`,
+    transparent:true, depthWrite:false, blending:T3.AdditiveBlending, side:T3.DoubleSide
+  });
+}
+function textSprite(text, color, scale=1){
+  const cv=document.createElement('canvas'); cv.width=512; cv.height=128;
+  const g=cv.getContext('2d'); g.font='800 72px -apple-system,Helvetica,Arial,sans-serif';
+  g.textAlign='center'; g.textBaseline='middle';
+  g.shadowColor=color; g.shadowBlur=18; g.fillStyle=color; g.fillText(text,256,66);
+  g.shadowBlur=0; g.fillStyle='#ffffff'; g.globalAlpha=.35; g.fillText(text,256,66);
+  const tex=new T3.CanvasTexture(cv);
+  const m=new T3.SpriteMaterial({map:tex,transparent:true,depthWrite:false,depthTest:false});
+  const s=new T3.Sprite(m); s.scale.set(2.6*scale,0.65*scale,1); s.renderOrder=5; return s;
+}
+function dotTexture(){
+  const cv=document.createElement('canvas'); cv.width=cv.height=64; const g=cv.getContext('2d');
+  const gr=g.createRadialGradient(32,32,0,32,32,32); gr.addColorStop(0,'rgba(255,255,255,1)'); gr.addColorStop(.4,'rgba(255,255,255,.8)'); gr.addColorStop(1,'rgba(255,255,255,0)');
+  g.fillStyle=gr; g.fillRect(0,0,64,64); return new T3.CanvasTexture(cv);
+}
+const DOT = dotTexture();
+// grid-line geometry for parametric (sphere / open cylinder) geometries
+function gridLines(geo, cols, rows){
+  const p=geo.attributes.position, pts=[];
+  const idx=(i,j)=>i*cols+j;
+  for(let i=0;i<rows;i++)for(let j=0;j<cols;j++){
+    const a=idx(i,j);
+    if(j<cols-1){const b=idx(i,j+1);pts.push(p.getX(a),p.getY(a),p.getZ(a),p.getX(b),p.getY(b),p.getZ(b));}
+    if(i<rows-1){const b=idx(i+1,j);pts.push(p.getX(a),p.getY(a),p.getZ(a),p.getX(b),p.getY(b),p.getZ(b));}
+  }
+  const g=new T3.BufferGeometry(); g.setAttribute('position',new T3.Float32BufferAttribute(pts,3)); return g;
+}
+
+// ---------- worlds ----------
+const W = {mouth:new T3.Group(), tooth:new T3.Group(), micro:new T3.Group()};
+W.tooth.position.set(60,0,0); W.micro.position.set(130,0,0);
+const SCALE = {mouth:0, tooth:1, micro:2};
+Object.values(W).forEach(g=>scene.add(g));
+
+// ===== MOUTH =====
+const mouth = {};
+(function buildMouth(){
+  const root=new T3.Group(); W.mouth.add(root); mouth.root=root;
+  const gumMat=new T3.MeshPhongMaterial({color:0xe8788a,shininess:35,specular:0x442222});
+  const gumDark=new T3.MeshPhongMaterial({color:0xc65266,shininess:20,specular:0x221111});
+  const toothMat=new T3.MeshPhongMaterial({color:0xfdfcf6,shininess:110,specular:0xffffff,emissive:0x111111});
+  const tongueMat=new T3.MeshPhongMaterial({color:0xdc5a6c,shininess:25,specular:0x331111});
+  const throatMat=new T3.MeshBasicMaterial({color:0x2a0710});
+  const arch=(t,r=1)=>V(2.35*Math.sin(t)*r,0,(1.95*Math.cos(t)-0.45)*r);
+  const capsule=new T3.CapsuleGeometry(0.2,0.34,4,10);
+
+  function jaw(isUpper){
+    const g=new T3.Group(), s=isUpper?1:-1;
+    const pts=[];for(let i=0;i<=24;i++){const t=-1.55+i*3.1/24;const p=arch(t);p.y=0.62*s;pts.push(p);}
+    const gum=new T3.Mesh(new T3.TubeGeometry(new T3.CatmullRomCurve3(pts),60,0.44,12,false),gumMat); g.add(gum);
+    const plate=new T3.Mesh(new T3.SphereGeometry(1,24,12),gumDark); plate.scale.set(2.15,0.32,1.85); plate.position.set(0,0.78*s,-0.35); g.add(plate);
+    const n=14; g.userData.teeth=[];
+    for(let i=0;i<n;i++){
+      const t=-1.4+i*2.8/(n-1), at=Math.abs(t);
+      const m=new T3.Mesh(capsule,toothMat);
+      const p=arch(t,0.985); m.position.set(p.x,0.18*s,p.z);
+      m.rotation.y=t;
+      if(at<0.36){m.scale.set(1.25,1.15,0.6);m.position.y=0.12*s;}
+      else if(at<0.6){m.scale.set(1.0,1.15,0.9);m.position.y=0.1*s;}
+      else if(at<0.95){m.scale.set(1.15,0.95,1.1);}
+      else{m.scale.set(1.45,0.85,1.4);m.position.y=0.22*s;}
+      g.add(m); g.userData.teeth.push(m);
+    }
+    return g;
+  }
+  const upper=jaw(true); root.add(upper);
+  const pivot=new T3.Group(); pivot.position.set(0,0,-1.7); root.add(pivot);
+  const lower=jaw(false); lower.position.set(0,0,1.7); pivot.add(lower);
+  const tongue=new T3.Mesh(new T3.SphereGeometry(1,28,16),tongueMat); tongue.scale.set(1.55,0.45,1.55); tongue.position.set(0,-0.42,-0.25); lower.add(tongue);
+  const throat=new T3.Mesh(new T3.SphereGeometry(1,20,12),throatMat); throat.scale.set(2.2,1.1,0.6); throat.position.set(0,0,-1.75); root.add(throat);
+  mouth.pivot=pivot; mouth.upper=upper;
+  mouth.molar=lower.userData.teeth[1]; // lower-left back molar
+  root.position.y=0;
+})();
+
+// ===== TOOTH (3 variants) =====
+const tooth = {};
+(function buildTooth(){
+  const root=new T3.Group(); W.tooth.add(root); tooth.root=root;
+  function crownGeo(ws,hs){
+    const g=new T3.SphereGeometry(1,ws,hs); const p=g.attributes.position;
+    for(let i=0;i<p.count;i++){
+      let x=p.getX(i),y=p.getY(i),z=p.getZ(i);
+      if(y>0){ y=y*0.82+0.16*y*Math.cos(x*3.4)*Math.cos(z*3.4); }
+      else { const k=1-0.18*(-y); x*=k; z*=k; y*=1.05; }
+      p.setXYZ(i,x,y,z);
+    }
+    g.computeVertexNormals(); return g;
+  }
+  const roots=[ {p:V(-0.55,0.6,0.05), r:V(0,0,-0.2)}, {p:V(0.57,0.6,0.05), r:V(0,0,0.18)}, {p:V(0,0.6,-0.45), r:V(-0.2,0,0)} ];
+  function rootGeo(rt,rb,rs,hs){const g=new T3.CylinderGeometry(rt,rb,2.4,rs,hs,true); g.translate(0,-1.2,0); return g;}
+  function build(matC, matR, lines){
+    const g=new T3.Group();
+    const cg=lines?gridLines(crownGeo(30,20),31,21):crownGeo(40,28);
+    const crown=lines?new T3.LineSegments(cg,matC):new T3.Mesh(cg,matC);
+    crown.scale.set(1.28,0.92,1.12); crown.position.y=1.05; g.add(crown);
+    roots.forEach(o=>{
+      const rg=lines?gridLines(rootGeo(0.52,0.1,16,9),17,10):rootGeo(0.52,0.1,20,8);
+      const m=lines?new T3.LineSegments(rg,matR):new T3.Mesh(rg,matR);
+      m.position.copy(o.p); m.rotation.set(o.r.x,o.r.y,o.r.z); g.add(m);
+    });
+    return g;
+  }
+  // X-ray
+  tooth.xrayMat=fresnelMat(0x4aa8ff,{power:1.8,base:0.07});
+  tooth.xray=build(tooth.xrayMat,tooth.xrayMat,false); root.add(tooth.xray);
+  tooth.pulpMat=fresnelMat(0xff8a3c,{power:1.2,base:0.35});
+  const pulp=new T3.Group();
+  const pc=new T3.Mesh(crownGeo(24,16),tooth.pulpMat); pc.scale.set(0.66,0.42,0.56); pc.position.y=1.0; pulp.add(pc);
+  roots.forEach(o=>{const m=new T3.Mesh(rootGeo(0.17,0.03,10,4),tooth.pulpMat); m.position.copy(o.p); m.position.y+=0.15; m.rotation.set(o.r.x,o.r.y,o.r.z); pulp.add(m);});
+  tooth.xray.add(pulp);
+  // Wireframe
+  tooth.wireMat=new T3.LineBasicMaterial({color:0xffffff,transparent:true,opacity:0.85,depthWrite:false});
+  tooth.wire=build(tooth.wireMat,tooth.wireMat,true); root.add(tooth.wire);
+  // Glossy white
+  tooth.glossMat=new T3.MeshPhongMaterial({color:0xf4f6fb,specular:0xffffff,shininess:140,emissive:0x1a2230,transparent:true,opacity:1});
+  tooth.gloss=build(tooth.glossMat,tooth.glossMat,false); root.add(tooth.gloss);
+  // Shield
+  tooth.shieldMat=fresnelMat(0x3ef0c8,{power:2.4,base:0.04});
+  tooth.shield=new T3.Mesh(new T3.SphereGeometry(1,40,26),tooth.shieldMat);
+  tooth.shield.scale.set(2.25,3.15,2.25); tooth.shield.position.y=-0.25; W.tooth.add(tooth.shield);
+  // anchors
+  tooth.anchorEnamel=new T3.Object3D(); tooth.anchorEnamel.position.set(1.15,1.45,0.35); root.add(tooth.anchorEnamel);
+
+  // Fluor lattice (3 hexagonal cells)
+  const lat=new T3.Group(); lat.position.set(4.6,-0.1,0); W.tooth.add(lat); tooth.lattice=lat;
+  const caMat=new T3.MeshPhongMaterial({color:0xffd166,emissive:0x553300,shininess:60,transparent:true});
+  const lineMat=new T3.LineBasicMaterial({color:0x9cc8ff,transparent:true,opacity:0.5});
+  const caGeo=new T3.SphereGeometry(0.13,14,10);
+  tooth.cells=[];
+  [1.55,0,-1.55].forEach((cy,k)=>{
+    const cell=new T3.Group(); cell.position.set(k===1?0.9:0,cy,0); lat.add(cell);
+    const ring=[];for(let i=0;i<6;i++){const a=i*Math.PI/3;const v=V(Math.cos(a)*0.78,Math.sin(a)*0.78,0);ring.push(v);const s=new T3.Mesh(caGeo,caMat);s.position.copy(v);cell.add(s);}
+    const lg=new T3.BufferGeometry().setFromPoints(ring.concat([ring[0]])); cell.add(new T3.Line(lg,lineMat));
+    const oh=textSprite('OH⁻','#ff5a4a',0.95), f=textSprite('F⁻','#3ef0c8',1.05);
+    cell.add(oh); cell.add(f); tooth.cells.push({cell,oh,f,k});
+  });
+  tooth.caMat=caMat; tooth.latLine=lineMat;
+  const caLbl=textSprite('Ca²⁺','#ffd166',0.8); caLbl.position.set(-1.25,2.1,0); lat.add(caLbl); tooth.caLbl=caLbl;
+})();
+
+// ===== MICRO (enamel crystals) =====
+const micro = {};
+(function buildMicro(){
+  const root=W.micro;
+  const hex=new T3.CylinderGeometry(0.5,0.5,6,6); hex.translate(0,-3,0);
+  const mat=new T3.MeshPhongMaterial({color:0xc9e4ff,emissive:0x0e2a55,specular:0x9fd0ff,shininess:70,flatShading:true});
+  const C=13,R=13,N=C*R;
+  const inst=new T3.InstancedMesh(hex,mat,N); root.add(inst);
+  const base=[]; const dummy=new T3.Object3D(); const col=new T3.Color();
+  let k=0;
+  for(let r=0;r<R;r++)for(let c=0;c<C;c++){
+    const x=(c-(C-1)/2)*0.9+(r%2)*0.45, z=(r-(R-1)/2)*0.78;
+    const y=-Math.random()*0.18;
+    const d=Math.hypot(x,z);
+    base.push({x,y,z,w:clamp(1-d/4.2)*(0.55+Math.random()*0.45),tx:(Math.random()-0.5),tz:(Math.random()-0.5),rot:Math.random()*0.5});
+    dummy.position.set(x,y,z); dummy.rotation.set(0,base[k].rot,0); dummy.updateMatrix(); inst.setMatrixAt(k,dummy.matrix);
+    col.setHSL(0.58+Math.random()*0.04,0.55,0.72+Math.random()*0.12); inst.setColorAt(k,col); k++;
+  }
+  micro.inst=inst; micro.base=base; micro.dummy=dummy;
+  micro.setErosion=function(d){
+    for(let i=0;i<N;i++){const b=base[i];const e=d*b.w;
+      dummy.position.set(b.x+b.tx*e*0.25,b.y-e*1.3,b.z+b.tz*e*0.25);
+      dummy.rotation.set(b.tz*e*0.45,b.rot,-b.tx*e*0.45); dummy.updateMatrix(); inst.setMatrixAt(i,dummy.matrix);}
+    inst.instanceMatrix.needsUpdate=true;
+  };
+  // bacteria
+  const bGroup=new T3.Group(); root.add(bGroup); micro.bact=bGroup;
+  const bMat=new T3.MeshPhongMaterial({color:0xb48cff,emissive:0x2e1660,shininess:50,transparent:true});
+  const bGeo=new T3.SphereGeometry(0.32,16,12);
+  micro.bacts=[];
+  [[-2.6,2.6,0.6],[-0.6,3.3,-1.2],[1.6,2.8,0.8],[3.0,3.4,-0.6],[0.4,2.4,1.9]].forEach((p,i)=>{
+    const g=new T3.Group(); g.position.set(p[0],p[1],p[2]);
+    const n=3+(i%2);for(let j=0;j<n;j++){const s=new T3.Mesh(bGeo,bMat);s.position.set((j-(n-1)/2)*0.58,Math.sin(j*1.7)*0.12,0);g.add(s);}
+    g.rotation.z=(i-2)*0.35; g.userData.ph=i*1.3; bGroup.add(g); micro.bacts.push(g);
+  });
+  micro.bMat=bMat;
+  // sugars (cubes)
+  const sMat=new T3.MeshPhongMaterial({color:0xffffff,emissive:0x444444,transparent:true});
+  const sGeo=new T3.BoxGeometry(0.22,0.22,0.22);
+  micro.sugars=[]; for(let i=0;i<10;i++){const m=new T3.Mesh(sGeo,sMat);m.userData={b:i%5,ph:Math.random(),ox:(Math.random()-0.5)*1.5};root.add(m);micro.sugars.push(m);}
+  micro.sMat=sMat;
+  // acid particles
+  const AN=90; const ap=new Float32Array(AN*3);
+  const aGeo=new T3.BufferGeometry(); aGeo.setAttribute('position',new T3.BufferAttribute(ap,3));
+  micro.aMat=new T3.PointsMaterial({color:0xff4b3e,size:0.32,map:DOT,transparent:true,depthWrite:false,blending:T3.AdditiveBlending});
+  micro.acid=new T3.Points(aGeo,micro.aMat); root.add(micro.acid);
+  micro.aSeed=[];for(let i=0;i<AN;i++)micro.aSeed.push({b:i%5,ph:Math.random(),ox:(Math.random()-0.5)*2.2,oz:(Math.random()-0.5)*2.2,sp:0.35+Math.random()*0.25});
+  // saliva particles
+  const SN=70; const sp=new Float32Array(SN*3);
+  const slGeo=new T3.BufferGeometry(); slGeo.setAttribute('position',new T3.BufferAttribute(sp,3));
+  micro.slMat=new T3.PointsMaterial({color:0x5fd8ff,size:0.34,map:DOT,transparent:true,depthWrite:false,blending:T3.AdditiveBlending});
+  micro.saliva=new T3.Points(slGeo,micro.slMat); root.add(micro.saliva);
+  micro.sSeed=[];for(let i=0;i<SN;i++)micro.sSeed.push({x:(Math.random()-0.5)*12,z:(Math.random()-0.5)*7,ph:Math.random(),sp:0.12+Math.random()*0.12});
+  // ions
+  micro.ions=[];
+  for(let i=0;i<14;i++){
+    const ca=i%2===0; const s=textSprite(ca?'Ca²⁺':'PO₄³⁻',ca?'#ffd166':'#d39bff',0.95);
+    const a=Math.random()*Math.PI*2, r=Math.random()*2.8;
+    const bx=Math.cos(a)*r, bz=Math.sin(a)*r*0.8;
+    s.userData={b:V(bx,-0.4,bz), e:V(bx*1.6+(Math.random()-0.5)*1.5, 1.4+Math.random()*3.2, bz*1.1), ph:Math.random()*6};
+    root.add(s); micro.ions.push(s);
+  }
+  // labels
+  micro.lblB=textSprite('bactéries','#cdb4ff',1.1); micro.lblB.position.set(-3.8,4.0,0.6); root.add(micro.lblB);
+  micro.lblS=textSprite('sucres','#ffffff',1.0); micro.lblS.position.set(2.4,6.4,0); root.add(micro.lblS);
+  micro.lblA=textSprite('acide lactique','#ff6a5a',1.2); micro.lblA.position.set(3.2,1.0,2.2); root.add(micro.lblA);
+})();
+
+// ---------- steps ----------
+const SPEAKERS=['Iloha','Arthur','Charles','Doan'];
+const STEPS=[
+  {s:0,w:'mouth',pos:[0,1.4,8.6],look:[0,-0.15,0]},
+  {s:0,w:'tooth',pos:[0.9,0.1,10.2],look:[0.9,-0.35,0]},
+  {s:0,w:'micro',pos:[2.4,3.4,5.6],look:[0,-0.6,0]},
+  {s:1,w:'micro',pos:[0.4,5.8,14.5],look:[0.4,1.5,0]},
+  {s:1,w:'micro',pos:[-0.8,5.2,14],look:[0.4,1.6,0]},
+  {s:2,w:'tooth',pos:[-2.6,0.3,9.4],look:[-2.6,-0.4,0],blur:true},
+  {s:2,w:'tooth',pos:[-3.2,0.8,8.4],look:[-3.0,-0.4,0],blur:true},
+  {s:3,w:'tooth',pos:[2.0,0.2,12],look:[2.0,-0.3,0]},
+  {s:3,w:'tooth',pos:[0,0.3,11.5],look:[0,-0.2,0]},
+  {s:3,w:'tooth',pos:[2.7,0.2,10.4],look:[2.7,-0.35,0]},
+  {s:3,w:'tooth',pos:[2.7,0.2,10.4],look:[2.7,-0.35,0]},
+  {s:3,w:'tooth',pos:[2.7,0.2,10.4],look:[2.7,-0.35,0]},
+  {s:3,w:'tooth',pos:[2.7,0.2,10.4],look:[2.7,-0.35,0]},
+  {s:3,w:'mouth',pos:[0,0.5,8.2],look:[0,0.05,0]},
+];
+const worldPos=(w,a)=>V(a[0],a[1],a[2]).add(W[w].position);
+
+let cur=0, stepT=0, time=0;
+const cam={pos:V(0,0,0),look:V(0,0,0)};
+let tw=null; // camera tween
+let curWorld='mouth';
+const vis={xray:0,wire:0,gloss:0,shield:0,lattice:0,acid:0,saliva:0,bact:0};
+let tgt={};
+let mouthSpin=true, jawOpen=0.42, jawTarget=0.42;
+
+function setWorldVisible(w){Object.keys(W).forEach(k=>W[k].visible=(k===w));curWorld=w;}
+function easeIO(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
+function easeIn(t){return t*t*t;} function easeOut(t){return 1-Math.pow(1-t,3);}
+
+function focusOf(i){
+  if(i===0){const p=new T3.Vector3();mouth.molar.getWorldPosition(p);return p;}
+  if(i===1){const p=new T3.Vector3();tooth.anchorEnamel.getWorldPosition(p);return p;}
+  return cam.look.clone();
+}
+
+function goTo(n, instant){
+  n=clamp(n,0,STEPS.length-1); if(n===cur && !instant) return;
+  const prev=cur, P=STEPS[n];
+  const from={pos:cam.pos.clone(),look:cam.look.clone()};
+  const tp=worldPos(P.w,P.pos), tl=worldPos(P.w,P.look);
+  if(n!==0){ mouthSpin=false; }
+  if(instant){cam.pos.copy(tp);cam.look.copy(tl);setWorldVisible(P.w);tw=null;}
+  else if(P.w!==curWorld){
+    const dirIn=SCALE[P.w]>SCALE[curWorld];
+    const focus=dirIn?focusOf(prev):cam.look.clone();
+    let p1, s2;
+    if(dirIn){ p1=from.pos.clone().lerp(focus,0.9); s2=tl.clone().add(tp.clone().sub(tl).multiplyScalar(3.2)); }
+    else { p1=from.look.clone().add(from.pos.clone().sub(from.look).multiplyScalar(2.6)); s2=tl.clone().add(tp.clone().sub(tl).multiplyScalar(0.22)); }
+    tw={kind:'dive',t:0,d1:0.8,d2:1.5,from,p1,focus:dirIn?focus:from.look.clone(),s2,tp,tl,w:P.w,switched:false};
+  } else {
+    tw={kind:'move',t:0,d:1.7,from,tp,tl};
+  }
+  cur=n; stepT=0; applyStep(n);
+}
+
+function applyStep(n){
+  const P=STEPS[n];
+  // indicator
+  document.getElementById('indTxt').textContent=(P.s+1)+' / 4 · '+SPEAKERS[P.s];
+  document.querySelectorAll('#ind .dots i').forEach((d,i)=>d.classList.toggle('on',i===P.s));
+  // text blocks
+  document.querySelectorAll('#ui [data-s]').forEach(el=>{el.classList.toggle('on',el.dataset.s.split(' ').map(Number).includes(n));});
+  document.getElementById('demin').classList.remove('on');
+  document.querySelectorAll('.card').forEach(c=>c.classList.toggle('on',n>=+c.dataset.from && n<=12));
+  canvas.classList.toggle('blur',!!P.blur);
+  const cw=document.getElementById('chartWrap'); cw.classList.remove('play');
+  if(n===5){ resetCurve(); void cw.offsetWidth; cw.classList.add('play'); }
+  // 3D targets
+  tgt={xray:0,wire:0,gloss:0,shield:0,lattice:0,acid:0,saliva:0,bact:0};
+  if(n===1||n===5||n===6) tgt.xray=1;
+  if(n===7) {tgt.wire=1;tgt.lattice=1;}
+  if(n>=8&&n<=12){tgt.gloss=1;tgt.shield=n===8?1:0.45;}
+  if(n===3){tgt.acid=1;tgt.bact=1;}
+  if(n===4){tgt.saliva=1;tgt.bact=1;tgt.acid=0;}
+  jawTarget = n===13?0.1:0.42;
+}
+
+// ---------- Stephan chart ----------
+const DATA=[[0,6.8],[5,5.4],[10,5.0],[15,5.1],[20,5.4],[30,5.8],[40,6.3],[60,6.7]];
+const X0=120,X1=960,Y0=500,Y1=70, PH0=4.5, PH1=7.0;
+const sx=t=>X0+(X1-X0)*t/60, sy=p=>Y0-(Y0-Y1)*(p-PH0)/(PH1-PH0);
+(function buildChart(){
+  const svg=document.getElementById('chart'); let h='';
+  h+=`<text x="500" y="32" text-anchor="middle" font-size="40" font-weight="800">Courbe de Stephan</text>`;
+  [4.5,5,5.5,6,6.5,7].forEach(p=>{h+=`<line x1="${X0}" x2="${X1}" y1="${sy(p)}" y2="${sy(p)}" stroke="rgba(156,200,255,.15)" stroke-width="2"/>`;
+    h+=`<text x="${X0-14}" y="${sy(p)+9}" text-anchor="end" font-size="26" font-weight="600">${String(p).replace('.',',')}</text>`;});
+  [0,10,20,30,40,50,60].forEach(t=>{h+=`<text x="${sx(t)}" y="${Y0+38}" text-anchor="middle" font-size="26" font-weight="600">${t}</text>`;});
+  // zone (linear crossings: 4,64 min and 22,5 min)
+  const c1=5*(6.8-5.5)/(6.8-5.4), c2=20+10*(5.5-5.4)/(5.8-5.4);
+  const zp=[[c1,5.5],[5,5.4],[10,5.0],[15,5.1],[20,5.4],[c2,5.5]].map(d=>sx(d[0])+','+sy(d[1])).join(' ');
+  h+=`<polygon id="zone" points="${zp}" fill="rgba(255,75,62,.55)"/>`;
+  h+=`<line x1="${X0}" x2="${X1}" y1="${sy(5.5)}" y2="${sy(5.5)}" stroke="#ff4b3e" stroke-width="4"/>`;
+  h+=`<text x="${X1}" y="${sy(5.5)-12}" text-anchor="end" font-size="28" font-weight="800" style="fill:#ff4b3e">pH critique 5,5</text>`;
+  h+=`<line x1="${X0}" x2="${X0}" y1="${Y1-10}" y2="${Y0}" stroke="#fff" stroke-width="3"/><line x1="${X0}" x2="${X1+10}" y1="${Y0}" y2="${Y0}" stroke="#fff" stroke-width="3"/>`;
+  h+=`<path id="curve" d="M${DATA.map(d=>sx(d[0])+','+sy(d[1])).join(' L')}"/>`;
+  DATA.forEach((d,i)=>{h+=`<circle class="pt" cx="${sx(d[0])}" cy="${sy(d[1])}" r="8" fill="#fff" style="transition-delay:${(0.9+3*d[0]/60).toFixed(2)}s"/>`;});
+  h+=`<g id="zoneLbl"><text x="${sx(13.5)}" y="${sy(4.78)}" text-anchor="middle" font-size="31" font-weight="800" style="fill:#ffb3ab">≈ 18 min de déminéralisation</text></g>`;
+  h+=`<text x="${(X0+X1)/2}" y="${Y0+86}" text-anchor="middle" font-size="30" font-weight="700">Temps après la prise (min)</text>`;
+  h+=`<text transform="translate(28,${(Y0+Y1)/2}) rotate(-90)" text-anchor="middle" font-size="30" font-weight="700">pH de la plaque</text>`;
+  svg.innerHTML=h;
+})();
+function resetCurve(){
+  const c=document.getElementById('curve'); const L=c.getTotalLength();
+  c.style.transition='none'; c.style.strokeDasharray=L; c.style.strokeDashoffset=L; void c.getBoundingClientRect();
+  c.style.transition=''; requestAnimationFrame(()=>{c.style.strokeDashoffset=0;});
+}
+
+// ---------- per-frame step logic ----------
+const phEl=document.querySelector('#ph .val'), phFill=document.querySelector('#ph .fill'), phCrit=document.querySelector('#ph .crit');
+const PHMIN=4.0, PHMAX=7.5;
+phCrit.style.bottom=((5.5-PHMIN)/(PHMAX-PHMIN)*100)+'%';
+let lastPh=-1, dState=0;
+function phColor(p){const k=clamp((p-5.0)/1.8);const r=Math.round(lerp(255,62,k)),g=Math.round(lerp(75,240,k)),b=Math.round(lerp(62,200,k));return `rgb(${r},${g},${b})`;}
+function setPh(p){
+  const r=Math.round(p*10)/10;
+  if(r!==lastPh){lastPh=r;phEl.textContent=r.toFixed(1).replace('.',',');phEl.style.color=phColor(p);}
+  phFill.style.height=((p-PHMIN)/(PHMAX-PHMIN)*100)+'%'; phFill.style.background=phColor(p);
+}
+
+function updateMicro(dt){
+  const n=cur; let ph=6.8, d=0;
+  if(n===3){ ph=6.8-1.8*smooth((stepT-1.6)/5.5); d=clamp((5.5-ph)/0.5); }
+  else if(n===4){ ph=5.0+1.8*smooth((stepT-0.8)/5); d=clamp((5.5-ph)/0.5); }
+  if(n===3||n===4) setPh(ph);
+  document.getElementById('demin').classList.toggle('on', n===3 && ph<5.5);
+  dState=lerp(dState,d,Math.min(1,dt*6));
+  if(W.micro.visible){
+    micro.setErosion(dState);
+    // bacteria + sugars
+    micro.bMat.opacity=vis.bact; micro.bact.visible=vis.bact>0.01;
+    micro.bacts.forEach(b=>{b.position.y+=Math.sin(time*1.5+b.userData.ph)*0.002; b.rotation.y=time*0.3+b.userData.ph;});
+    micro.sMat.opacity=vis.acid;
+    micro.sugars.forEach(s=>{s.visible=vis.acid>0.01;const b=micro.bacts[s.userData.b].position;const f=(time*0.35+s.userData.ph)%1;
+      s.position.set(b.x+s.userData.ox*(1-f),lerp(7.5,b.y+0.3,f),b.z); s.rotation.set(time+f*4,time*1.3,0);});
+    micro.lblS.material.opacity=vis.acid; micro.lblA.material.opacity=vis.acid; micro.lblB.material.opacity=vis.bact;
+    // acid
+    micro.aMat.opacity=vis.acid; micro.acid.visible=vis.acid>0.01;
+    if(micro.acid.visible){const a=micro.acid.geometry.attributes.position;
+      micro.aSeed.forEach((s,i)=>{const b=micro.bacts[s.b].position;const f=(time*s.sp+s.ph)%1;
+        a.setXYZ(i,b.x+s.ox*f,lerp(b.y-0.2,0.05,f),b.z+s.oz*f);}); a.needsUpdate=true;}
+    // saliva
+    micro.slMat.opacity=vis.saliva*0.9; micro.saliva.visible=vis.saliva>0.01;
+    if(micro.saliva.visible){const a=micro.saliva.geometry.attributes.position;
+      micro.sSeed.forEach((s,i)=>{const f=(time*s.sp+s.ph)%1;a.setXYZ(i,s.x+Math.sin(time+i)*0.3,lerp(6,0.2,f),s.z);}); a.needsUpdate=true;}
+    // ions
+    const e=smooth(dState);
+    micro.ions.forEach(s=>{const u=s.userData; s.position.lerpVectors(u.b,u.e,e); s.position.y+=Math.sin(time*1.4+u.ph)*0.15*e;
+      s.material.opacity=clamp(dState*2.5); s.visible=dState>0.01;});
+  }
+}
+
+function updateTooth(){
+  tooth.root.rotation.y = 0.45*Math.sin(time*0.35);
+  tooth.xray.visible=vis.xray>0.01; tooth.xrayMat.uniforms.uOpacity.value=vis.xray; tooth.pulpMat.uniforms.uOpacity.value=vis.xray;
+  tooth.wire.visible=vis.wire>0.01; tooth.wireMat.opacity=0.85*vis.wire;
+  tooth.gloss.visible=vis.gloss>0.01; tooth.glossMat.opacity=vis.gloss; tooth.glossMat.depthWrite=vis.gloss>0.95;
+  // shield: grows on step 8
+  const sh=vis.shield; tooth.shield.visible=sh>0.01;
+  const grow = cur===8 ? 0.6+0.4*easeOut(clamp(stepT/1.4)) : 1;
+  tooth.shield.scale.set(2.25*grow,3.15*grow,2.25*grow);
+  tooth.shieldMat.uniforms.uOpacity.value=sh*(0.85+0.15*Math.sin(time*2.2));
+  tooth.shield.rotation.y=time*0.2;
+  // lattice
+  const lv=vis.lattice; tooth.lattice.visible=lv>0.01;
+  tooth.caMat.opacity=lv; tooth.latLine.opacity=0.5*lv; tooth.caLbl.material.opacity=lv;
+  const swap = cur===7 ? clamp((stepT-1.6)/1.6) : (cur>7?1:0);
+  tooth.cells.forEach(c=>{
+    const s=clamp(swap*1.6-c.k*0.3);
+    const so=smooth(s);
+    c.oh.position.set(so*1.6, so*1.1, 0); c.oh.material.opacity=lv*(1-so);
+    c.f.position.set((1-so)*2.6,(1-so)*1.8,0); c.f.material.opacity=lv*so;
+  });
+}
+
+function updateMouth(dt){
+  if(mouthSpin) mouth.root.rotation.y=0.65*Math.sin(time*0.32);
+  else mouth.root.rotation.y=lerp(mouth.root.rotation.y,0,Math.min(1,dt*2));
+  jawOpen=lerp(jawOpen,jawTarget,Math.min(1,dt*2.5));
+  mouth.pivot.rotation.x=jawOpen; mouth.upper.rotation.x=-jawOpen*0.25;
+  mouth.root.position.y = cur===13 ? Math.sin(time*2)*0.04 : 0;
+  mouth.root.rotation.x = cur===13 ? lerp(mouth.root.rotation.x,0.12,Math.min(1,dt*2)) : lerp(mouth.root.rotation.x,0,Math.min(1,dt*2));
+}
+
+const flash=document.getElementById('flash');
+function updateCamera(dt){
+  if(!tw) return;
+  tw.t+=dt;
+  if(tw.kind==='move'){
+    const k=easeIO(clamp(tw.t/tw.d));
+    cam.pos.lerpVectors(tw.from.pos,tw.tp,k); cam.look.lerpVectors(tw.from.look,tw.tl,k);
+    if(tw.t>=tw.d) tw=null;
+  } else {
+    if(tw.t<tw.d1){
+      const k=easeIn(tw.t/tw.d1);
+      cam.pos.lerpVectors(tw.from.pos,tw.p1,k); cam.look.lerpVectors(tw.from.look,tw.focus,k);
+      flash.style.opacity=(k*0.9).toFixed(3);
+    } else {
+      if(!tw.switched){tw.switched=true;setWorldVisible(tw.w);}
+      const k=easeOut(clamp((tw.t-tw.d1)/tw.d2));
+      cam.pos.lerpVectors(tw.s2,tw.tp,k); cam.look.copy(tw.tl);
+      flash.style.opacity=(0.9*(1-clamp((tw.t-tw.d1)/0.6))).toFixed(3);
+      if(tw.t>=tw.d1+tw.d2){tw=null;flash.style.opacity=0;}
+    }
+  }
+}
+
+// anchored label (step 1)
+const lbl1=document.getElementById('lbl1'); const tmpV=new T3.Vector3();
+function updateLabels(){
+  if(cur===1){tooth.anchorEnamel.getWorldPosition(tmpV);tmpV.project(camera);
+    const x=(tmpV.x*0.5+0.5)*innerWidth, y=(-tmpV.y*0.5+0.5)*innerHeight;
+    lbl1.style.left=(x-7)+'px'; lbl1.style.top=(y-7- (lbl1.offsetHeight/2-7))+'px';}
+}
+
+// ---------- loop ----------
+let last=performance.now();
+function frame(now){
+  const dt=Math.min(0.05,(now-last)/1000); last=now; time+=dt; stepT+=dt;
+  for(const k in vis){ vis[k]=lerp(vis[k],tgt[k]||0,Math.min(1,dt*3)); if(Math.abs(vis[k]-(tgt[k]||0))<0.002) vis[k]=tgt[k]||0; }
+  updateCamera(dt);
+  camera.position.copy(cam.pos); camera.lookAt(cam.look);
+  updateMouth(dt); updateTooth(); updateMicro(dt); updateLabels();
+  renderer.render(scene,camera);
+  requestAnimationFrame(frame);
+}
+function resize(){
+  const w=innerWidth,h=innerHeight; renderer.setSize(w,h,false); camera.aspect=w/h;
+  // keep framing on narrower ratios (4:3 iPads)
+  camera.fov = w/h < 1.45 ? 45*1.45/(w/h)*0.92+45*0.08 : 45; camera.updateProjectionMatrix();
+}
+addEventListener('resize',resize); resize();
+
+// ---------- input ----------
+const next=()=>goTo(cur+1), prev=()=>goTo(cur-1);
+addEventListener('keydown',e=>{
+  if(['ArrowRight','ArrowDown','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();next();}
+  else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)){e.preventDefault();prev();}
+});
+let sx0=0,sy0=0,down=false;
+const fsBtn=document.getElementById('fs');
+document.addEventListener('pointerdown',e=>{ if(fsBtn.contains(e.target))return; down=true;sx0=e.clientX;sy0=e.clientY;},{passive:true});
+document.addEventListener('pointerup',e=>{
+  if(!down)return; down=false; if(fsBtn.contains(e.target))return;
+  const dx=e.clientX-sx0, dy=e.clientY-sy0;
+  if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)){ dx<0?next():prev(); }
+  else if(Math.abs(dx)<20 && Math.abs(dy)<20){ e.clientX>innerWidth/2?next():prev(); }
+},{passive:true});
+document.addEventListener('pointercancel',()=>{down=false;});
+document.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
+document.addEventListener('gesturestart',e=>e.preventDefault());
+document.addEventListener('dblclick',e=>e.preventDefault());
+// fullscreen
+const de=document.documentElement;
+const reqFS=de.requestFullscreen||de.webkitRequestFullscreen;
+const exitFS=document.exitFullscreen||document.webkitExitFullscreen;
+const isFS=()=>document.fullscreenElement||document.webkitFullscreenElement;
+if(!reqFS) fsBtn.style.display='none';
+fsBtn.addEventListener('click',e=>{e.stopPropagation(); try{ if(isFS()) exitFS.call(document); else reqFS.call(de); }catch(err){} });
+
+// hash deep-link (#5) for rehearsal
+const h=parseInt(location.hash.slice(1),10);
+goTo(isNaN(h)?0:clamp(h-1,0,STEPS.length-1),true);
+if(cur===0) applyStep(0);
+window.__goTo=goTo;
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
