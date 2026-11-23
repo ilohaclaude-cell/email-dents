@@ -1,66 +1,39 @@
-# Oral : l'émail des dents (3 min, 4 orateurs)
+# Texte de l'oral : l'émail des dents
 
-Lien : https://ilohaclaude-cell.github.io/email-dents/
-👉 = toucher la moitié droite de l'écran (étape suivante). 14 étapes en tout.
+(Toucher la droite de l'écran à chaque [suivant].)
 
----
+## Iloha
 
-## 🎤 ILOHA : « L'émail : un cristal » (≈ 45 s)
+Bonjour à tous. Nous sommes Iloha, Arthur, Charles et Doan, et aujourd'hui nous allons vous parler de l'émail des dents, un cristal qu'il faut protéger. [suivant]
 
-**Écran 1 : bouche 3D qui tourne + titre**
-« Bonjour ! Nous sommes Iloha, Arthur, Charles et Doan. Aujourd'hui, on vous parle de l'émail des dents : un cristal à protéger. »
-👉
+Voici une molaire vue comme sur une radio. La partie bleue, c'est l'émail : c'est la couche qui recouvre la dent et c'est le tissu le plus dur de tout notre corps. La partie orange, à l'intérieur, c'est la pulpe, où se trouvent les nerfs. L'émail est composé à quatre-vingt-seize pour cent d'un minéral qui s'appelle l'hydroxyapatite. [suivant]
 
-**Écran 2 : la caméra plonge sur une molaire « rayons X »**
-« L'émail, c'est la couche bleue qui recouvre la dent. À l'intérieur, en orange, c'est la pulpe, avec les nerfs. L'émail est le tissu le plus dur du corps humain : il est fait à 96 % d'un minéral, l'hydroxyapatite. »
-👉
+Si l'on zoome dans l'émail, on découvre de tout petits cristaux en forme d'hexagone, collés les uns aux autres : on les appelle des prismes. La formule de l'hydroxyapatite contient du calcium, du phosphate et des ions hydroxyde. Le problème, c'est que l'émail ne contient aucune cellule vivante : une fois abîmé, il ne peut pas se réparer tout seul. Arthur va maintenant vous expliquer comment il s'abîme. [suivant]
 
-**Écran 3 : zoom sur les cristaux hexagonaux**
-« Si on zoome, on voit des cristaux en forme d'hexagone, très serrés : ce sont les prismes. Leur formule : Ca₁₀(PO₄)₆(OH)₂. Mais attention : l'émail ne contient aucune cellule vivante. Donc il ne se régénère pas. Arthur va vous montrer comment il s'abîme. »
-👉 *(Arthur prend la parole)*
+## Arthur
 
----
+Nous sommes maintenant à la surface de la dent. Les petites boules violettes sont des bactéries qui vivent dans notre bouche. Quand nous mangeons du sucre, elles s'en nourrissent et rejettent un acide, l'acide lactique, que vous voyez en rouge. Regardez la jauge à droite : le pH baisse et passe de six virgule huit à cinq. Dès qu'il descend sous cinq virgule cinq, qu'on appelle le pH critique, les cristaux commencent à se dissoudre et perdent du calcium et du phosphate. C'est ce qu'on appelle la déminéralisation, et c'est le premier stade de la carie. [suivant]
 
-## 🎤 ARTHUR : « Déminéralisation » (≈ 45 s)
+Heureusement, notre salive neutralise l'acide. Le pH remonte peu à peu et les minéraux reviennent se fixer sur la dent : c'est la reminéralisation. En revanche, les sodas et les jus de fruits sont tellement acides, avec un pH entre deux et quatre, qu'ils attaquent directement l'émail : c'est l'érosion. Charles va maintenant vous montrer ce que cela représente en chiffres. [suivant]
 
-**Écran 4 : bactéries, sucres, acide + jauge de pH qui descend**
-« Ici, on est à la surface de la dent. Les boules violettes, ce sont des bactéries. Quand on mange, elles mangent les sucres et rejettent de l'acide lactique : les points rouges.
-Regardez la jauge : le pH descend de 6,8 vers 5. Dès qu'il passe sous 5,5, le pH critique, les cristaux se défont et perdent des ions calcium et phosphate. C'est la déminéralisation : le premier stade de la carie. »
-👉
+## Charles
 
-**Écran 5 : le pH remonte, les ions reviennent**
-« Heureusement, la salive neutralise l'acide : le pH remonte et les ions reviennent se fixer. C'est la reminéralisation.
-Par contre, en bas à gauche : les sodas et les jus ont un pH de 2 à 4. Ils attaquent l'émail directement : c'est l'érosion. Charles va faire le calcul. »
-👉 *(Charles prend la parole)*
+Cette courbe s'appelle la courbe de Stephan. Elle montre comment le pH de la plaque dentaire évolue après un repas ou une collation. On voit qu'en seulement cinq minutes, le pH passe sous la ligne rouge du pH critique, et qu'il y reste jusqu'à environ vingt-deux minutes. La zone rouge correspond donc à environ dix-huit minutes pendant lesquelles l'émail se dissout, et cela à chaque fois que l'on mange. [suivant]
 
----
+Prenons maintenant deux élèves. Emma mange trois fois par jour : trois fois dix-huit minutes, cela fait cinquante-quatre minutes d'attaque acide par jour. Hugo, lui, grignote huit fois par jour : huit fois dix-huit, cela fait cent quarante-quatre minutes, c'est-à-dire plus de deux heures. Les dents d'Hugo sont donc attaquées presque trois fois plus longtemps que celles d'Emma. Ce qui compte, ce n'est pas seulement la quantité de sucre, c'est surtout le nombre de fois où l'on mange. Doan va maintenant vous expliquer comment protéger ses dents. [suivant]
 
-## 🎤 CHARLES : « Le calcul » (≈ 45 s)
+## Doan
 
-**Écran 6 : la courbe de Stephan se dessine**
-« Voici la courbe de Stephan : le pH de la plaque après qu'on a mangé. En 5 minutes, le pH tombe sous la ligne rouge de 5,5. Il y reste jusqu'à environ 22 minutes. La zone rouge, ça fait à peu près 18 minutes de déminéralisation à chaque fois qu'on mange. »
-👉
+Notre meilleur allié, c'est le fluor. Dans le cristal, les ions fluorure, en vert, viennent prendre la place des ions hydroxyde, en rouge. Le cristal devient alors de la fluorapatite, qui est beaucoup plus solide : elle résiste à l'acide jusqu'à un pH d'environ quatre virgule cinq, au lieu de cinq virgule cinq. [suivant]
 
-**Écran 7 : barres Emma / Hugo**
-« Comparons deux élèves. Emma mange 3 fois par jour : 3 × 18 = 54 minutes d'attaque par jour. Hugo grignote 8 fois : 8 × 18 = 144 minutes, soit 2 h 24 !
-Hugo, c'est 2,7 fois plus. Conclusion : c'est le NOMBRE de prises qui compte, pas seulement la quantité de sucre. Doan va vous dire comment se protéger. »
-👉 *(Doan prend la parole)*
+Le fluor agit donc comme un véritable bouclier autour de la dent. Pour garder un émail en bonne santé, nous avons quatre conseils à vous donner. [suivant]
 
----
+D'abord, il faut se brosser les dents deux fois par jour, pendant deux minutes, avec un dentifrice au fluor. [suivant]
 
-## 🎤 DOAN : « Se protéger » (≈ 45 s)
+Ensuite, il vaut mieux éviter de grignoter entre les repas. [suivant]
 
-**Écran 8 : dent en fil de fer, les F⁻ remplacent les OH⁻**
-« Notre meilleure arme, c'est le fluor. Dans le cristal, les ions fluorure F⁻, en vert, prennent la place des ions OH⁻, en rouge. On obtient la fluorapatite, Ca₁₀(PO₄)₆F₂, qui résiste à l'acide jusqu'à un pH de 4,5 environ. »
-👉
+Il faut aussi limiter les sodas et les jus de fruits. [suivant]
 
-**Écran 9 : bouclier lumineux, dent blanche**
-« Le fluor, c'est comme un bouclier pour la dent. Nos 4 conseils : »
-👉 **Écran 10 :** « Se brosser les dents 2 fois par jour, 2 minutes, avec un dentifrice fluoré à 1 450 ppm. »
-👉 **Écran 11 :** « Limiter le grignotage. »
-👉 **Écran 12 :** « Éviter les sodas et les jus. »
-👉 **Écran 13 :** « Et aller chez le dentiste une fois par an. »
-👉
+Et enfin, il est important d'aller chez le dentiste au moins une fois par an. [suivant]
 
-**Écran 14 : la bouche sourit, « Merci ! »**
-« Prenez soin de votre émail : il ne repousse pas ! Merci de nous avoir écoutés. » *(tous ensemble : « Merci ! »)*
+Pour conclure, souvenez-vous que l'émail ne repousse pas : il faut en prendre soin toute sa vie. Merci de nous avoir écoutés !
